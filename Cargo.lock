@@ -2111,11 +2111,8 @@ dependencies = [
  "bytes",
  "libc",
  "nom",
- "observability_deps",
  "smallvec",
  "snafu",
- "test_helpers",
- "workspace-hack",
 ]
 
 [[package]]

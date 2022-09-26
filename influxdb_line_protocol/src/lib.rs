@@ -28,7 +28,6 @@ use nom::{
     multi::many0,
     sequence::{preceded, separated_pair, terminated, tuple},
 };
-use observability_deps::tracing::debug;
 use smallvec::SmallVec;
 use snafu::{ResultExt, Snafu};
 use std::cmp::Ordering;
@@ -510,9 +509,6 @@ pub fn parse_lines(input: &str) -> impl Iterator<Item = Result<ParsedLine<'_>>> 
             Err(nom::Err::Incomplete(_)) => unreachable!("Cannot have incomplete data"), // Only streaming parsers have this
         };
 
-        if let Some(Err(r)) = &res {
-            debug!("Error parsing line: '{}'. Error was {:?}", line, r);
-        }
         res
     })
 }
@@ -1071,7 +1067,13 @@ fn escape_and_write_value(
 mod test {
     use super::*;
     use smallvec::smallvec;
-    use test_helpers::approximately_equal;
+
+    /// A test helper function for asserting floating point numbers are within the
+    /// machine epsilon because strict comparison of floating point numbers is
+    /// incorrect
+    pub fn approximately_equal(f1: f64, f2: f64) -> bool {
+        (f1 - f2).abs() < f64::EPSILON
+    }
 
     impl FieldValue<'_> {
         fn unwrap_i64(&self) -> i64 {

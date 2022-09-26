@@ -16,8 +16,4 @@ libc = { version = "0.2", optional = true }
 nom = { version = "7", default-features = false, features = ["std"] }
 smallvec = { version = "1.9.0", features = ["union"] }
 snafu = "0.7"
-observability_deps = { path = "../observability_deps" }
-workspace-hack = { path = "../workspace-hack"}
 
-[dev-dependencies] # In alphabetical order
-test_helpers = { path = "../test_helpers" }
